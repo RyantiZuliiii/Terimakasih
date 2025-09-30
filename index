@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Ucapan untuk Ibu Wali Kelas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #f0f8ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease-in-out;
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .card-front {
+            background: linear-gradient(45deg, #ffeef8, #fff0f5);
+            border: 3px solid #e6b3cc;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23f8d7da" opacity="0.3"/><circle cx="80" cy="40" r="1.5" fill="%23e6b3cc" opacity="0.4"/><circle cx="60" cy="80" r="2.5" fill="%23f8d7da" opacity="0.2"/><circle cx="30" cy="70" r="1" fill="%23e6b3cc" opacity="0.5"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+
+        .envelope {
+            width: 200px;
+            height: 140px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .envelope-body {
+            width: 100%;
+            height: 100px;
+            background: #fff;
+            border: 2px solid #e6b3cc;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .envelope-flap {
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 70px solid #f8d7da;
+            position: absolute;
+            top: -68px;
+            left: 0;
+            border-radius: 5px 5px 0 0;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .envelope-flap {
+            transform: rotateX(-20deg);
+        }
+
+        .front-text {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .front-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #8b4b6b;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .front-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .open-instruction {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            color: #8b4b6b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #fff 0%, #fefefe 100%);
+            border: 3px solid #e6b3cc;
+            transform: rotateY(180deg);
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 C30 10, 10 30, 10 50 C10 70, 30 90, 50 90 C70 90, 90 70, 90 50 C90 30, 70 10, 50 10 Z" fill="none" stroke="%23f8d7da" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="%23e6b3cc" opacity="0.3"/></svg>') no-repeat center;
+            opacity: 0.3;
+        }
+
+        .card-back::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20 50 Q30 20, 50 30 Q70 20, 80 50 Q70 80, 50 70 Q30 80, 20 50" fill="%23f8d7da" opacity="0.4"/></svg>') no-repeat center;
+        }
+
+        .message-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .greeting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #8b4b6b;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .message-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #444;
+            text-align: justify;
+            margin-bottom: 30px;
+            text-indent: 30px;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: #8b4b6b;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .signature-line {
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        .music-note {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #e6b3cc;
+            animation: musicFloat 3s ease-in-out infinite;
+            z-index: 1000;
+        }
+
+        @keyframes musicFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                height: 350px;
+            }
+            
+            .card-back {
+                padding: 25px;
+            }
+            
+            .front-title {
+                font-size: 1.8rem;
+            }
+            
+            .greeting {
+                font-size: 1.5rem;
+            }
+            
+            .message-text {
+                font-size: 0.9rem;
+                text-indent: 20px;
+            }
+            
+            .envelope {
+                width: 160px;
+                height: 112px;
+            }
+            
+            .envelope-body {
+                height: 80px;
+            }
+            
+            .envelope-flap {
+                border-left-width: 80px;
+                border-right-width: 80px;
+                border-bottom-width: 56px;
+                top: -54px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" id="greetingCard">
+            <!-- Bagian Depan Kartu -->
+            <div class="card-face card-front">
+                <div class="envelope">
+                    <div class="envelope-body"></div>
+                    <div class="envelope-flap"></div>
+                </div>
+                <div class="front-text">
+                    <h1 class="front-title">Untuk Ibu Wali Kelas</h1>
+                    <p class="front-subtitle">Yanti Damayanti, S.Pd</p>
+                    <p class="open-instruction">✨ Klik untuk Membuka ✨</p>
+                </div>
+            </div>
+
+            <!-- Bagian Belakang Kartu -->
+            <div class="card-face card-back">
+                <div class="message-content">
+                    <h2 class="greeting">Terima Kasih yang sebesar-besarnya</h2>
+                    
+                    <p class="message-text">
+                        kepada Ibu Wali Kelas tercinta, <strong>Yanti Damayanti, S.Pd</strong>. Selama ini Ibu sudah dengan sabar membimbing, mendampingi, dan memahami kami meskipun sikap kami sering merepotkan. Ibu selalu memberi yang terbaik untuk kami tanpa lelah, mengarahkan agar kami menjadi pribadi yang lebih baik, serta mengajarkan arti tanggung jawab dan kebersamaan.
+                    </p>
+                    
+                    <p class="message-text">
+                        Bagi kami, Ibu bukan hanya wali kelas, tapi juga seperti orang tua kedua yang selalu peduli dan menyayangi. Semoga kebaikan dan ketulusan ibu dibalas dengan keberkahan dan kebahagiaan yang melimpah.
+                    </p>
+                    
+                    <div class="signature">
+                        <div>Dengan tulus,</div>
+                        <div class="signature-line"><strong>Dari: Ryanti, Nopita, Marsa, Lingga, Nazmi</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Musik Latar -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+        <!-- Placeholder untuk musik instrumental yang lembut -->
+    </audio>
+
+    <!-- Indikator Musik -->
+    <div class="music-note" id="musicNote" style="display: none;">🎵</div>
+
+    <script>
+        const card = document.getElementById('greetingCard');
+        const music = document.getElementById('backgroundMusic');
+        const musicNote = document.getElementById('musicNote');
+        let isFlipped = false;
+
+        card.addEventListener('click', function() {
+            if (!isFlipped) {
+                card.classList.add('flipped');
+                isFlipped = true;
+                
+                // Putar musik setelah kartu dibuka
+                setTimeout(() => {
+                    music.play().then(() => {
+                        musicNote.style.display = 'block';
+                    }).catch(error => {
+                        console.log('Musik tidak dapat diputar otomatis:', error);
+                    });
+                }, 800);
+            }
+        });
+
+        // Tambahkan efek hover pada amplop
+        const envelope = document.querySelector('.envelope');
+        envelope.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+
+        envelope.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+
+        // Animasi loading halaman
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986fb3fba33baa34',t:'MTc1OTE5MzE4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
